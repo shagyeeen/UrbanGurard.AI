@@ -7,6 +7,12 @@ const groq = new Groq({
 
 export async function POST(req: NextRequest) {
     try {
+        if (!process.env.GROQ_API_KEY) {
+            return NextResponse.json({
+                error: 'AI Uplink Offline: GROQ_API_KEY missing from environment. Restart server after adding .env.local.'
+            }, { status: 500 });
+        }
+
         const { message, context, history } = await req.json();
 
         const systemPrompt = `
@@ -45,6 +51,8 @@ ${history.map((m: any) => `${m.role.toUpperCase()}: ${m.content}`).join('\n')}
         });
     } catch (error: any) {
         console.error('Groq API Error:', error);
-        return NextResponse.json({ error: 'Deep intelligence processing failed.' }, { status: 500 });
+        return NextResponse.json({
+            error: error.message || 'Deep intelligence processing failed.'
+        }, { status: 500 });
     }
 }

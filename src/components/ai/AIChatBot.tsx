@@ -37,11 +37,14 @@ export const AIChatBot = () => {
 
         try {
             // Optimization: Provide current context to the AI
+            const cityAssets = assets.filter(a => a.city === selectedCity);
             const context = {
                 city: selectedCity,
-                assetCount: assets.filter(a => a.city === selectedCity).length,
-                criticalNodes: assets.filter(a => a.city === selectedCity && a.status === 'Critical').map(a => a.name),
-                overallHealth: Math.round(assets.filter(a => a.city === selectedCity).reduce((acc, a) => acc + a.healthScore, 0) / assets.filter(a => a.city === selectedCity).length)
+                assetCount: cityAssets.length,
+                criticalNodes: cityAssets.filter(a => a.status === 'Critical').map(a => a.name),
+                overallHealth: cityAssets.length > 0
+                    ? Math.round(cityAssets.reduce((acc, a) => acc + a.healthScore, 0) / cityAssets.length)
+                    : 100
             };
 
             const response = await fetch('/api/chat', {
@@ -59,9 +62,9 @@ export const AIChatBot = () => {
             if (data.error) throw new Error(data.error);
 
             setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
-        } catch (error) {
+        } catch (error: any) {
             console.error('Chat Error:', error);
-            setMessages(prev => [...prev, { role: 'assistant', content: "Communication uplink failed. Please check network protocols or API limits." }]);
+            setMessages(prev => [...prev, { role: 'assistant', content: error.message || "Communication uplink failed. Please check network protocols or API limits." }]);
         } finally {
             setIsLoading(false);
         }
