@@ -98,7 +98,7 @@ A specialized technical collective from **Sri Krishna College of Technology, Coi
 ## Institutional Affiliation
 **Sri Krishna College of Technology (SKCT)**  
 Department of Information Technology  
-Coimbatore, Tamil Nadu, India
+Coimbatore, TamilNadu, India
 
 ---
 
