@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 };
 
 import { AIChatBot } from "@/components/ai/AIChatBot";
+import { TopNav } from "@/components/layout/TopNav";
 
 export default function RootLayout({
   children,
@@ -34,6 +35,7 @@ export default function RootLayout({
         <IntervalProvider>
           <ParticleBackground />
           <EmergencyOverlay />
+          <TopNav />
           <Sidebar />
           <main className="flex-1 ml-64 p-8 relative min-h-screen">
             <div className="max-w-7xl mx-auto w-full">

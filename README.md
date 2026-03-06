@@ -2,7 +2,7 @@
 
 ![UrbanGuard AI Banner](https://img.shields.io/badge/Urban--Intelligence-Next.js%2014-06B6D4?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![Deployment](https://img.shields.io/badge/Status-Operational-emerald?style=for-the-badge)
-![Innovation](https://img.shields.io/badge/Engine-Neural--Analytics-primary?style=for-the-badge)
+![Innovation](https://img.shields.io/badge/Engine-Neural-primary?style=for-the-badge)
 
 **Live Deployment :** [urbanguard-ai.vercel.app](https://urbanguard-ai.vercel.app/)
 
@@ -23,10 +23,10 @@ UrbanGuard AI protects and optimizes the cities of tomorrow, providing specializ
 - **Framework**: [Next.js 14/15](https://nextjs.org/) (App Router) for high-performance server-side rendering.
 - **UI Engine**: [Tailwind CSS](https://tailwindcss.com/) with a custom **Tactical Glassmorphism** design system.
 - **Motion Orchestration**: [Framer Motion](https://www.framer.com/motion/) for 120fps physics-based animations.
-- **Iconography**: [Lucide React](https://lucide.dev/) for high-fidelity technical symbols.
+- **Data Visualization**: [Recharts](https://recharts.org/) for high-precision structural health telemetry.
 
 ### **Intelligence & Logic**
-- **Vision Engine**: [Groq Cloud API](https://groq.com/) utilizing **Meta Llama 4 Scout (17B)** for real-time infrastructure image reasoning.
+- **Vision Engine**: [Groq Cloud API](https://groq.com/) utilizing **Llama-3.2-11b-Vision-Preview** for real-time infrastructure image reasoning.
 - **Chat Assistant**: [Groq SDK](https://github.com/groq/groq-sdk-nodejs) using **Llama 3.3 70B** for context-aware operational support.
 - **Global State**: [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction) for persistent cross-region data synchronization.
 
@@ -36,22 +36,32 @@ UrbanGuard AI protects and optimizes the cities of tomorrow, providing specializ
 
 ### 1. **Live Visual Intelligence (Dashboard)**
 - **Active Priority Vision Feeds**: Real-time simulation of CCTV uplinks for critical infrastructure nodes.
-- **CCTV Aesthetic Overlays**: Technical scanlines, real-time telemetry, and REC indicators for an authentic surveillance experience.
 - **Neural Integrity Score**: A health index calculated through automated visual hazard detection (Potholes, Cracks, Erosion).
 
-### 2. **AI Damage Analyst Uplink**
+### 2. **AI Analyser Tab (New)**
+- **Sector Search**: Deep-search infrastructure by location (e.g., *Kilambakkam*).
+- **Cinematic Asset HUD**: Futuristic circular integrity gauges and data-grid visualizations.
+- **Action Transparency Log**: A real-time, time-stamped timeline of municipal repairs and authority actions.
+- **7-Day History**: Predictive and historical integrity tracking using temporal variance indexes.
+
+### 3. **AI Damage Analyst Uplink**
 - **Manual Image Audit**: A dedicated portal to upload infrastructure inspection frames directly to the AI.
-- **Structural Health Reports**: Instant generation of AI-powered reports including **Asset Identification**, **Detected Issue**, **Severity Level**, and **Preventive Recommendations**.
-- **90B+ Multimodal Reasoning**: Leveraging cutting-edge vision models to identify structural anomalies with high clinical accuracy.
+- **Structural Health Reports**: Instant generation of AI-powered reports including **Asset Identification**, **Detected Issue**, and **Severity Level**.
 
-### 3. **Interactive Asset Inventory**
-- **Hover-Activated Previews**: Kinetic "Uplink" activation that plays live CCTV video streams when hovering over any asset card.
-- **Visual Status Protocols**: Assets are categorized by visual condition (Healthy, Warning, Critical) based on continuous AI frame auditing.
-- **Deep-Dive Detail Pages**: Immersive full-screen visual analysis pages with historical detection logs and AI-generated remediation strategies.
+### 4. **Emergency Response Hub (Authority Dashboard)**
+- **Tactical Radar Scan**: A cinematic sonar-based "All Clear" radar animation for sector monitoring.
+- **Priority Intervention List**: A high-stakes command center for resolving critical structural faults.
+- **Progress Uplink**: Authorities can broadcast live repair updates directly to the public-facing transparency log.
 
-### 4. **Tactical Operations Center**
-- **Chat with AI Assistant**: A persistent sidebar assistant (UrbanGuard AI) that understands your current city context and provides technical advice on maintenance schedules and risk mitigation.
-- **Regional Risk Leaderboard**: A prioritized stack of infrastructure nodes ranked by their visual damage severity.
+---
+
+## 🔐 Authority Access
+The **Emergency Response Hub** is a restricted sector. Authorized personnel can log in using the following credentials:
+
+| Field | Credential |
+| :--- | :--- |
+| **Personnel ID** | `ADMIN` |
+| **Security PIN** | `2026` |
 
 ---
 
@@ -85,13 +95,12 @@ A specialized technical collective from **Sri Krishna College of Technology, Coi
 3. Configure Environment Variables:
    Create a `.env.local` file in the root directory:
    ```env
-   GROQ_API_KEY=your_groq_api_key_here
+   NEXT_PUBLIC_GROQ_API_KEY=your_groq_api_key_here
    ```
 4. Launch the Tactical HUD:
    ```bash
    npm run dev
    ```
-5. Access the mission center at `http://localhost:3000`.
 
 ---
 

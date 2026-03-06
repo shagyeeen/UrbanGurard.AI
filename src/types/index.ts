@@ -13,6 +13,11 @@ export interface VisualAnalysis {
     recommendations: string[];
 }
 
+export interface DetectionProgress {
+    step: string;
+    timestamp: string;
+}
+
 export interface DamageDetection {
     id: string;
     timestamp: string;
@@ -20,9 +25,18 @@ export interface DamageDetection {
     severity: HealthStatus;
     description: string;
     issue: string;
+    isResolved?: boolean;
+    resolvedAt?: string;
+    actionTaken?: string;
+    progress?: DetectionProgress[];
 }
 
 export type City = 'Chennai' | 'Coimbatore';
+
+export interface HealthHistory {
+    date: string;
+    score: number;
+}
 
 export interface Asset {
     id: string;
@@ -37,6 +51,7 @@ export interface Asset {
     lastInspection: string;
     trend: 'improving' | 'declining' | 'stable';
     detections: DamageDetection[];
+    history: HealthHistory[];
 }
 
 export interface AppState {
@@ -48,4 +63,6 @@ export interface AppState {
     updateVisuals: () => void;
     getAssetById: (id: string) => Asset | undefined;
     setSelectedCity: (city: City) => void;
+    resolveIssue: (assetId: string, detectionId: string, action: string) => void;
+    addProgressStep: (assetId: string, detectionId: string, step: string) => void;
 }

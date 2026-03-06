@@ -101,13 +101,25 @@ const generateInitialAssets = (data: any[], city: 'Chennai' | 'Coimbatore') => {
                 assetId: `ASSET-${city === 'Chennai' ? 'CH' : 'CBE'}-${3000 + i}`,
                 severity: status,
                 description: `Visual AI detected ${randomIssue.issue.toLowerCase()} via CCTV feed.`,
-                issue: randomIssue.issue
+                issue: randomIssue.issue,
+                isResolved: false,
+                progress: []
             });
         }
 
         const center = city === 'Chennai' ? { lat: 13.0827, lng: 80.2707 } : { lat: 11.0168, lng: 76.9558 };
         const latOffset = ((i * 17) % 100) / 1000 - 0.05;
         const lngOffset = ((i * 23) % 100) / 1000 - 0.05;
+
+        // Generate 7 days of history
+        const history = Array.from({ length: 7 }).map((_, day) => {
+            const date = new Date();
+            date.setDate(date.getDate() - (6 - day));
+            return {
+                date: date.toISOString().split('T')[0],
+                score: healthScore + (Math.random() * 10 - 5)
+            };
+        });
 
         return {
             id: `ASSET-${city === 'Chennai' ? 'CH' : 'CBE'}-${3000 + i}`,
@@ -125,6 +137,7 @@ const generateInitialAssets = (data: any[], city: 'Chennai' | 'Coimbatore') => {
             lastInspection: new Date().toISOString().split('T')[0],
             trend: (i % 3 === 0 ? 'improving' : i % 3 === 1 ? 'declining' : 'stable') as 'improving' | 'declining' | 'stable',
             detections,
+            history
         };
     });
 };
@@ -143,6 +156,56 @@ export const useAssetStore = create<AppState>((set, get) => ({
 
     setSelectedCity: (city) => set({ selectedCity: city }),
     getAssetById: (id: string) => get().assets.find(a => a.id === id),
+
+    resolveIssue: (assetId, detectionId, action) => {
+        set((state) => ({
+            assets: state.assets.map(asset => {
+                if (asset.id !== assetId) return asset;
+                const updatedDetections = asset.detections.map(det => {
+                    if (det.id !== detectionId) return det;
+                    return {
+                        ...det,
+                        isResolved: true,
+                        resolvedAt: new Date().toISOString(),
+                        actionTaken: action,
+                        progress: [...(det.progress || []), { step: `RESOLVED: ${action}`, timestamp: new Date().toISOString() }]
+                    };
+                });
+
+                const hasPendingCritical = updatedDetections.some(d => d.severity === 'Critical' && !d.isResolved);
+                const hasPendingWarning = updatedDetections.some(d => d.severity === 'Warning' && !d.isResolved);
+
+                let newStatus: HealthStatus = 'Healthy';
+                if (hasPendingCritical) newStatus = 'Critical';
+                else if (hasPendingWarning) newStatus = 'Warning';
+
+                return {
+                    ...asset,
+                    detections: updatedDetections,
+                    status: newStatus,
+                    healthScore: newStatus === 'Healthy' ? 95 : asset.healthScore
+                };
+            })
+        }));
+    },
+
+    addProgressStep: (assetId, detectionId, step) => {
+        set((state) => ({
+            assets: state.assets.map(asset => {
+                if (asset.id !== assetId) return asset;
+                return {
+                    ...asset,
+                    detections: asset.detections.map(det => {
+                        if (det.id !== detectionId) return det;
+                        return {
+                            ...det,
+                            progress: [...(det.progress || []), { step, timestamp: new Date().toISOString() }]
+                        };
+                    })
+                };
+            })
+        }));
+    },
 
     updateVisuals: () => {
         set((state) => {
@@ -163,7 +226,8 @@ export const useAssetStore = create<AppState>((set, get) => ({
                             assetId: asset.id,
                             severity: newStatus,
                             description: `CCTV Analysis: New ${randomIssue.issue.toLowerCase()} identified.`,
-                            issue: randomIssue.issue
+                            issue: randomIssue.issue,
+                            isResolved: false
                         };
 
                         const newAnalysis: VisualAnalysis = {
@@ -192,7 +256,7 @@ export const useAssetStore = create<AppState>((set, get) => ({
             });
 
             const avgHealth = Math.round(updatedAssets.reduce((acc, a) => acc + a.healthScore, 0) / updatedAssets.length);
-            const criticalDetections = updatedAssets.flatMap(a => a.detections).filter(d => d.severity === 'Critical');
+            const criticalDetections = updatedAssets.flatMap(a => a.detections).filter(d => d.severity === 'Critical' && !d.isResolved);
 
             return {
                 assets: updatedAssets,
